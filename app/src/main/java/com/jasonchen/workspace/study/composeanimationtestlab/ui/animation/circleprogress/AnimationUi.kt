@@ -1,4 +1,4 @@
-package com.jasonchen.workspace.study.composeanimationtestlab.ui.animation
+package com.jasonchen.workspace.study.composeanimationtestlab.ui.animation.circleprogress
 
 import androidx.annotation.FloatRange
 import androidx.compose.animation.core.animateFloatAsState

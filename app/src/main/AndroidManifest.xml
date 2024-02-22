@@ -13,7 +13,11 @@
         android:theme="@style/Theme.ComposeAnimattionTestLab"
         tools:targetApi="31">
         <activity
-            android:name=".ui.animation.CircleProgressActivity"
+            android:name=".ui.animation.complete.BeatCircleActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".ui.animation.circleprogress.CircleProgressActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

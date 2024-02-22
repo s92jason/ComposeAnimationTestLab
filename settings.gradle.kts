@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ComposeAnimationTestLab"
 include(":app")
- 
+include(":compose-animation")

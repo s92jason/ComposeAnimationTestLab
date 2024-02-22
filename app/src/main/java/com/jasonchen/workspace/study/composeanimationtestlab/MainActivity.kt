@@ -1,5 +1,6 @@
 package com.jasonchen.workspace.study.composeanimationtestlab
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.jasonchen.workspace.study.composeanimationtestlab.ui.animation.complete.BeatCircleActivity
 import com.jasonchen.workspace.study.composeanimationtestlab.ui.home.HomeUi
 import com.jasonchen.workspace.study.composeanimationtestlab.ui.home.data.AnimationType.CIRCLE_PROGRESS
 import com.jasonchen.workspace.study.composeanimationtestlab.ui.home.data.AnimationType.COMPLETE
@@ -22,15 +24,18 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeAnimattionTestLabTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+                ) {
 //                    Greeting("Android")
-                    HomeUi(items = animations, onItemClock = {type ->
-                        when(type) {
+                    HomeUi(items = animations, onItemClock = { type ->
+                        when (type) {
                             CIRCLE_PROGRESS -> {
 
                             }
-                            COMPLETE -> {
 
+                            COMPLETE -> {
+                                startActivity(Intent(this, BeatCircleActivity::class.java))
                             }
                         }
                     })
@@ -43,8 +48,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
-        modifier = modifier
+        text = "Hello $name!", modifier = modifier
     )
 }
 

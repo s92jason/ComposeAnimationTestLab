@@ -2,6 +2,7 @@ package com.jasonchen.workspace.study.composeanimationtestlab.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,15 +36,19 @@ fun HomeUi(items: List<AnimationObject>, onItemClock: (AnimationType) -> Unit = 
         contentPadding = PaddingValues(10.dp)
     ) {
         items(items) { type ->
-            HomeAnimationItem(type, modifier = modifier)
+            HomeAnimationItem(type, modifier = modifier) {type ->
+                onItemClock.invoke(type)
+            }
         }
     }
 }
 
 @Composable
-fun HomeAnimationItem(type: AnimationObject, modifier: Modifier) {
+fun HomeAnimationItem(type: AnimationObject, modifier: Modifier, onItemClock: ((AnimationType) -> Unit)? = null) {
     Column(
-        modifier = Modifier.background(color = MaterialTheme.colorScheme.secondary),
+        modifier = Modifier
+            .background(color = MaterialTheme.colorScheme.secondary)
+            .clickable { onItemClock?.invoke(type.type) },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = modifier.height(20.dp))

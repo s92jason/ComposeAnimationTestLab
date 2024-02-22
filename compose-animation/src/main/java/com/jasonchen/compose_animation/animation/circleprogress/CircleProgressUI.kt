@@ -1,13 +1,11 @@
-package com.jasonchen.workspace.study.composeanimationtestlab.ui.animation
+package com.jasonchen.workspace.study.composeanimationtestlab.ui.animation.circleprogress
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.FloatRange
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationEndReason
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
@@ -32,24 +30,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jasonchen.compose_animation.animation.tick.AnimationTick
 
 @OptIn(ExperimentalAnimationGraphicsApi::class)
 @Composable
-fun CubeCircularProgress(
+fun CircularProgress(
     progress: Float,
     text: String,
     @DrawableRes id: Int,
@@ -88,7 +84,7 @@ fun CubeCircularProgress(
 }
 
 @Composable
-fun CubeCircularProgress(
+fun CircularProgress(
     progress: Float,
     text: String,
     modifier: Modifier = Modifier,
@@ -204,93 +200,6 @@ private fun DrawScope.drawCircularProgressIndicator(
     )
 }
 
-@Composable
-fun AnimationTick(
-    modifier: Modifier = Modifier,
-    color: Color,
-    strokeWidth: Dp = 3.dp,
-    firstLineTween: TweenSpec<Float> = tween(durationMillis = 130, easing = FastOutSlowInEasing),
-    secondLineTween: TweenSpec<Float> = tween(durationMillis = 120, easing = LinearOutSlowInEasing)
-) {
-    var viewSize by remember {
-        mutableStateOf(IntSize.Zero)
-    }
-
-    Box(modifier = modifier.onGloballyPositioned { coordinates ->
-        viewSize = coordinates.size
-    }, contentAlignment = Alignment.Center) {
-
-        if (viewSize.width != 0 && viewSize.height != 0) {
-            val aspect = 13.5f / 20f
-            val width: Float
-            val height: Float
-            if (viewSize.width * aspect < viewSize.height) {
-                width = viewSize.width.toFloat()
-                height = viewSize.width * aspect
-            } else {
-                width = viewSize.height / aspect
-                height = viewSize.height.toFloat()
-            }
-
-            val offsetX = width / 2f
-            val centerX = -offsetX + width * (8.5f / 20f)
-            val bottomY = height * (7f / 13.5f)
-            val coordinates =
-                arrayOf(Offset(-offsetX, 0f), Offset(centerX, height * (7f / 13.5f)), Offset(centerX + width * (11.5f / 20f), bottomY - height))
-            val offsets = arrayOf(coordinates[1] - coordinates[0], coordinates[2] - coordinates[1])
-
-            val animationTween1 = remember {
-                Animatable(0f)
-            }
-
-            val animationTween2 = remember {
-                Animatable(0f)
-            }
-
-            LaunchedEffect(key1 = animationTween1, key2 = animationTween2, block = {
-                animationTween1.animateTo(
-                    targetValue = 1f,
-                    animationSpec = firstLineTween
-                )
-
-                animationTween2.animateTo(
-                    targetValue = 1f,
-                    animationSpec = secondLineTween
-                )
-            })
-
-            Canvas(modifier = Modifier, onDraw = {
-                val strokeWidthPx = strokeWidth.toPx()
-                val path = Path().apply {
-
-                    var offset = offsets[0] * animationTween1.value
-                    var x = coordinates[0].x
-                    var y = coordinates[0].y
-
-                    moveTo(coordinates[0].x, coordinates[0].y)
-
-                    x += offset.x
-                    y += offset.y
-                    lineTo(x, y)
-
-                    if (animationTween2.value > 0) {
-                        offset = offsets[1] * animationTween2.value
-
-                        x += offset.x
-                        y += offset.y
-                        lineTo(x, y)
-                    }
-
-                    moveTo(coordinates[0].x, coordinates[0].y)
-                    close()
-                }
-
-                drawPath(path, color, style = Stroke(width = strokeWidthPx, join = StrokeJoin.Round))
-            })
-        }
-    }
-}
-
 @Preview
 @Composable
 fun PreviewCircularProgress() {
@@ -300,10 +209,10 @@ fun PreviewCircularProgress() {
     var text = "${completedTargetSize.toInt()} / ${targetSize.toInt()}"
 
     Box(modifier = Modifier.padding(20.dp)) {
-        CubeCircularProgress(
+        CircularProgress(
             progress = completedTargetSize / targetSize,
             text = text,
-            modifier = Modifier.size(1000.dp),
+            modifier = Modifier.size(100.dp),
             innerPadding = 10.dp,
             strokeWidth = 10.dp
         )

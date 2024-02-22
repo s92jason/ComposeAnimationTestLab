@@ -1,4 +1,4 @@
-package com.jasonchen.workspace.study.composeanimationtestlab.ui.animation
+package com.jasonchen.workspace.study.composeanimationtestlab.ui.animation.circleprogress
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
